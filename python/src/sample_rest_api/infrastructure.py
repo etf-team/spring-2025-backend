@@ -54,7 +54,7 @@ class RestAPIConfig(BaseModel):
     jwt_secret: str
 
 
-class CharConfig(BaseSettings):
+class SampleConfig(BaseSettings):
     postgres: PostgresConfig = None
     rest_api: RestAPIConfig = None
     admin: AdminConfig = None
@@ -62,20 +62,20 @@ class CharConfig(BaseSettings):
     model_config = SettingsConfigDict(
         env_nested_delimiter="__",
         env_file=".env",
-        env_prefix="CHAR__",
+        env_prefix="SAMPLE__",
         extra="ignore",
     )
 
 
 class InfrastructureProvider(Provider):
     @provide(scope=Scope.APP)
-    def get_config(self) -> CharConfig:
-        return CharConfig()
+    def get_config(self) -> SampleConfig:
+        return SampleConfig()
 
     @provide(scope=Scope.APP)
     def get_postgres_config(
             self,
-            config: CharConfig,
+            config: SampleConfig,
     ) -> PostgresConfig:
         if config.postgres is None:
             raise RuntimeError("Postgres configuration not found")
@@ -85,7 +85,7 @@ class InfrastructureProvider(Provider):
     @provide(scope=Scope.APP)
     def get_admin_config(
             self,
-            config: CharConfig,
+            config: SampleConfig,
     ) -> AdminConfig:
         if config.admin is None:
             raise RuntimeError("Admin panel configuration not found")
@@ -95,7 +95,7 @@ class InfrastructureProvider(Provider):
     @provide(scope=Scope.APP)
     def get_rest_api_config(
             self,
-            config: CharConfig,
+            config: SampleConfig,
     ) -> RestAPIConfig:
         if config.rest_api is None:
             raise RuntimeError("Rest API configuration not found.")
