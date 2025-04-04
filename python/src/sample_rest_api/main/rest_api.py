@@ -29,7 +29,7 @@ def main():
         lifespan=lifespan,
         root_path="/api",
         title="Sample API",
-        description="The challenges arena API.",
+        description="The sample API.",
     )
     app.add_middleware(
         CORSMiddleware,
