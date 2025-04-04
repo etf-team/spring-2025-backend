@@ -88,12 +88,15 @@ class Register(BaseModel):
     full_name: str
 
 
-@router.post("/register")
+@router.post(
+    "/register",
+    response_model=UserFullDTO,
+)
 @inject
 async def register(
         session: FromDishka[AsyncSession],
         payload: Register,
-) -> UserFullDTO:
+) -> User:
     stmt = (
         select(User)
         .where(User.email == payload.email)
@@ -116,15 +119,16 @@ async def register(
     await session.flush()
     await session.commit()
     await session.refresh(user)
-    return UserFullDTO.model_validate(user)
+    return user
 
 
 @router.get(
     "/me",
     dependencies=[openapi_auth_dep],
+    response_model=UserFullDTO,
 )
 @inject
 async def get_protected_resource(
         user: FromDishka[User],
-) -> UserFullDTO:
-    return UserFullDTO.model_validate(user)
+) -> User:
+    return user
