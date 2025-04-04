@@ -28,7 +28,7 @@ def main():
     app = FastAPI(
         lifespan=lifespan,
         root_path="/api",
-        title="CHAR",
+        title="Sample API",
         description="The challenges arena API.",
     )
     app.add_middleware(

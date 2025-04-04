@@ -6,7 +6,7 @@ services:
     ports:
       - ${COMPOSE__REST_API__HOST}:${COMPOSE__REST_API__PORT}:80
     restart: unless-stopped
-    command: [ "char-rest-api" ]
+    command: [ "sample-rest-api" ]
     env_file:
       - python/.env
     depends_on:
@@ -19,19 +19,6 @@ services:
       retries: 3
       timeout: 2s
       start_period: 10s
-    volumes:
-      - ./python/src:/usr/src/app/src
-  daemon:
-    build: ./python
-    restart: unless-stopped
-    command: [ "char-daemon" ]
-    env_file:
-      - python/.env
-    depends_on:
-      postgres:
-        condition: service_healthy
-      run-migrations:
-        condition: service_completed_successfully
     volumes:
       - ./python/src:/usr/src/app/src
   postgres:
@@ -54,7 +41,7 @@ services:
   run-migrations:
     build: ./python
     restart: no
-    command: [ "char-alembic", "upgrade", "head" ]
+    command: [ "sample-alembic", "upgrade", "head" ]
     env_file:
       - ./python/.env
     depends_on:
