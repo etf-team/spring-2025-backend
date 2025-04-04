@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sample"
+version = "0.0.1"
+dependencies = [
+    "fastapi~=0.115",
+    "uvicorn",
+    "python-multipart",
+    "python-jose",
+    "bcrypt",
+    "passlib[bcrypt]",
+    "pydantic[email]>=2.9.2",
+    "pydantic-settings",
+    "SQLAlchemy~=2.0",
+    "sqladmin",
+    "itsdangerous",
+    "psycopg",
+    "pytest",
+    "pytest-asyncio",
+    "alembic",
+    "asyncpg",
+    "dishka",
+    "authx",
+    "greenlet",
+]
+
+
+[project.scripts]
+sample-rest-api = "sample_rest_api.main.rest_api:main"
+sample-alembic = "sample_core.main.alembic:main"
