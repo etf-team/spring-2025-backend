@@ -25,6 +25,7 @@ dependencies = [
     "dishka",
     "authx",
     "greenlet",
+    "pandas",
 ]
 
 
