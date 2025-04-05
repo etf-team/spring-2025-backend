@@ -9,7 +9,7 @@ from . import (
 router = APIRouter()
 
 outer_router = APIRouter()
-outer_router.include_router(auth.router)
+# outer_router.include_router(auth.router)
 outer_router.include_router(volumes_info.router)
 
 inner_router = APIRouter(
