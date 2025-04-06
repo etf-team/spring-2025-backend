@@ -396,7 +396,7 @@ class ServiceDocsParser:
         # try horizontal
         for n, i in enumerate(df.iloc[:, 0]):
             if isinstance(i, datetime):
-                for hour, j in enumerate(df.iloc[n].values):
+                for hour, j in enumerate(df.iloc[n].values[1:]):
                     results.append(PowerConsumptionEntry(
                         time=time(hour=hour),
                         day=n+1,
