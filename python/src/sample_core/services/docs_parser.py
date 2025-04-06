@@ -1,3 +1,4 @@
+import abc
 from datetime import datetime, timedelta, time
 from decimal import Decimal
 import re
@@ -39,9 +40,11 @@ class PriceCategoryTypeEnum(StrEnum):
 
 
 class BaseParsedCategory(BaseModel):
+    @abc.abstractmethod
     def get_type(self) -> PriceCategoryTypeEnum:
         pass
 
+    @abc.abstractmethod
     def evaluate_case_cost(
             self,
             app_config: ApplicationConfig,
@@ -49,6 +52,13 @@ class BaseParsedCategory(BaseModel):
             power_hours_net: PowerHoursNet,
             case: ClientCase,
     ) -> Decimal:
+        pass
+
+    @abc.abstractmethod
+    def get_max_power_correctance(
+            self,
+            max_power_kwt: float,
+    ) -> float:
         pass
 
 
@@ -64,6 +74,14 @@ class ParsedPricesInfoCat1(BaseParsedCategory):
 
     def get_type(self) -> PriceCategoryTypeEnum:
         return PriceCategoryTypeEnum.FIRST
+
+    def get_max_power_correctance(
+            self,
+            max_power_kwt: float,
+    ) -> float:
+        max_allowed_kwt = 670
+        if max_power_kwt > max_allowed_kwt:
+            return max_allowed_kwt - max_power_kwt
 
     def evaluate_case_cost(
             self,
@@ -105,6 +123,12 @@ class ParsedPricesInfoCat3(BaseParsedCategory):
 
     def get_type(self) -> PriceCategoryTypeEnum:
         return PriceCategoryTypeEnum.THIRD
+
+    def get_max_power_correctance(
+            self,
+            max_power_kwt: float,
+    ) -> float:
+        return 0
 
     def evaluate_case_cost(
             self,
@@ -154,7 +178,6 @@ class ParsedPricesInfoCat3(BaseParsedCategory):
                 if current_ast_record.date > price_dt.date():
                     continue
                 if current_ast_record.date < price_dt.date():
-                    breakpoint()
                     raise RuntimeError("Lack of ATS records")
                 power_points_ast.append(amount_mwt)
                 try:
@@ -175,6 +198,12 @@ class ParsedPricesInfoCat4(BaseParsedCategory):
 
     def get_type(self) -> PriceCategoryTypeEnum:
         return PriceCategoryTypeEnum.FORTH
+
+    def get_max_power_correctance(
+            self,
+            max_power_kwt: float,
+    ) -> float:
+        return 0
 
     def evaluate_case_cost(
             self,
@@ -227,7 +256,6 @@ class ParsedPricesInfoCat4(BaseParsedCategory):
                 if current_ast_record.date > price_dt.date():
                     continue
                 if current_ast_record.date < price_dt.date():
-                    breakpoint()
                     raise RuntimeError("Lack of ATS records")
                 power_points_ast.append(amount_mwt)
                 try:

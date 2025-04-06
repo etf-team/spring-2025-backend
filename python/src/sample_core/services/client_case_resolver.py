@@ -53,8 +53,10 @@ class ServiceClientCaseResolver:
         app_config = await self.orm_session.scalar(stmt)
 
         stmt = (select(PowerHoursAtsRecord)
-                .where(func.date_part("year", PowerHoursAtsRecord.date) == elected_file.comes_into_force_from.year)
-                .where(func.date_part("month", PowerHoursAtsRecord.date) == elected_file.comes_into_force_from.month))
+                .where(func.date_part("year", PowerHoursAtsRecord.date)
+                       == elected_file.comes_into_force_from.year)
+                .where(func.date_part("month", PowerHoursAtsRecord.date)
+                       == elected_file.comes_into_force_from.month))
         power_hours_ast_records = await self.orm_session.scalars(stmt)
         power_hours_ast_records = list(power_hours_ast_records)
 
@@ -63,11 +65,13 @@ class ServiceClientCaseResolver:
 
         resolved_categories = []
         for i in [parsed_cat_1, parsed_cat_3, parsed_cat_4]:
+            correctance = i.get_max_power_correctance(
+                max_power_kwt=case.max_power_capacity_kwt, )
             resolved_categories.append(
                 ClientCaseResolvedCategory(
                     applicability=ClientCaseCategoryApplicability(
-                        is_applicable_power_capacity=True,
-                        power_capacity_change_recommendation=0,
+                        is_applicable_power_capacity=correctance == 0,
+                        power_capacity_change_recommendation=correctance,
                     ),
                     category_type=i.get_type(),
                     total_cost=i.evaluate_case_cost(
