@@ -82,6 +82,7 @@ class ParsedPricesInfoCat1(BaseParsedCategory):
         max_allowed_kwt = 670
         if max_power_kwt > max_allowed_kwt:
             return max_allowed_kwt - max_power_kwt
+        return 0
 
     def evaluate_case_cost(
             self,
