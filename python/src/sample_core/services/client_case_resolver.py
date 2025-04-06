@@ -46,7 +46,10 @@ class ServiceClientCaseResolver:
         parsed_cat_4 = self.service_docs_parser.parse_xlsx_prices_info_cat4(
             elected_file.file)
 
-        stmt = select(ApplicationConfig)
+        stmt = (select(ApplicationConfig)
+                .where(ApplicationConfig
+                       .comes_into_force_from <= datetime.now())
+                .order_by(ApplicationConfig.comes_into_force_from.desc()))
         app_config = await self.orm_session.scalar(stmt)
 
         stmt = (select(PowerHoursAtsRecord)
