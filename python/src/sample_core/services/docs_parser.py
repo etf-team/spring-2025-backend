@@ -267,7 +267,7 @@ class ParsedPricesInfoCat4(BaseParsedCategory):
 
             if case.is_transmission_included:
                 if str(price_dt.time().hour) in power_hours_net.include_hours:
-                    power_points_net.append(case_entry.amount_kwt)
+                    power_points_net.append(case_entry.amount_mwt)
 
         power_cost = (sum(power_points_ast)
                       / Decimal(len(power_points_ast))
