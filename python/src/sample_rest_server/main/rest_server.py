@@ -6,15 +6,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from uvicorn import run
 
-from sample_rest_api import routers
-from sample_rest_api.admin import setup_admin
-from sample_rest_api.infrastructure import (
-    InfrastructureProvider,
+from sample_core.dishka import ProviderSampleCore
+from sample_core.services.dishka import ProviderCoreServices
+from sample_rest_server import routers
+from sample_rest_server.admin import setup_admin
+from sample_rest_server.dishka import (
+    ProviderSampleRestServer,
 )
 
 
 def main():
-    dependency_providers = (InfrastructureProvider(),)
+    dependency_providers = (
+        ProviderSampleCore(),
+        ProviderCoreServices(),
+        ProviderSampleRestServer(),
+    )
     container = make_async_container(*dependency_providers)
 
     @asynccontextmanager

@@ -9,12 +9,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sample_core.models import (
     User,
 )
-from sample_rest_api.infrastructure import InfrastructureProvider
+from sample_rest_server.dishka import ProviderSampleRestServer
 
 
 @pytest_asyncio.fixture
 async def app_container():
-    async_container = make_async_container(InfrastructureProvider())
+    async_container = make_async_container(ProviderSampleRestServer())
     async with async_container() as container:
         yield container
 

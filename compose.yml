@@ -1,12 +1,12 @@
 name: "sample"
 
 services:
-  rest-api:
+  rest-server:
     build: ./python
     ports:
       - ${COMPOSE__REST_API__HOST}:${COMPOSE__REST_API__PORT}:80
     restart: unless-stopped
-    command: [ "sample-rest-api" ]
+    command: [ "sample-rest-server" ]
     env_file:
       - python/.env
     depends_on:
@@ -21,6 +21,7 @@ services:
       start_period: 10s
     volumes:
       - ./python/src:/usr/src/app/src
+      - ./uploaded-files:/var/uploaded-files
   postgres:
       image: postgres:17
       volumes:
@@ -52,7 +53,7 @@ services:
     ports:
       - ${COMPOSE__NGINX__HOST}:${COMPOSE__NGINX__PORT}:443
     depends_on:
-      rest-api:
+      rest-server:
         condition: service_started
 volumes:
   postgres_data:

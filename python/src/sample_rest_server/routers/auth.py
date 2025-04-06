@@ -11,8 +11,8 @@ from sample_core.models.user import User
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from sample_rest_api.dtos.user import UserFullDTO
-from sample_rest_api.infrastructure import openapi_auth_dep
+from sample_rest_server.dtos.user import UserFullDTO
+from sample_rest_server.dishka import openapi_auth_dep
 
 
 router = APIRouter()

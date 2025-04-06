@@ -6,10 +6,10 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from sample_core.dishka import ProviderSampleCore, ConfigPostgres
 from sample_core.models.base import Base
-from sample_rest_api.infrastructure import (
-    InfrastructureProvider,
-    PostgresConfig,
+from sample_rest_server.dishka import (
+    ProviderSampleRestServer,
 )
 
 # this is the Alembic Config object, which provides
@@ -70,8 +70,11 @@ def run_migrations_online() -> None:
     #     poolclass=pool.NullPool,
     # )
 
-    container = make_container(InfrastructureProvider())
-    postgres_config = container.get(PostgresConfig)
+    container = make_container(
+        ProviderSampleCore(),
+        ProviderSampleRestServer(),
+    )
+    postgres_config = container.get(ConfigPostgres)
     connectable = create_engine(
         url=postgres_config.get_sqlalchemy_url("psycopg"),
     )

@@ -26,9 +26,12 @@ dependencies = [
     "authx",
     "greenlet",
     "pandas",
+    "fastapi-storages",
+    "openpyxl",
+    "xlrd",
 ]
 
 
 [project.scripts]
-sample-rest-api = "sample_rest_api.main.rest_api:main"
+sample-rest-server = "sample_rest_server.main.rest_server:main"
 sample-alembic = "sample_core.main.alembic:main"

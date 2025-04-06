@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TypeAlias, Annotated
 
+from sqlalchemy import ForeignKey
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, mapped_column
 
